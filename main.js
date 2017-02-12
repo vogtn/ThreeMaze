@@ -4,7 +4,7 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var aspect = width/height;
 var unitsize = 250;
-var wallheight = unitsize/3;
+var wallheight = unitsize/2;
 var movespeed = 100;
 var lookspeed = 0.075;
 
@@ -139,7 +139,7 @@ function setupScene(){
 
   //speed cube
   speedcube = new t.Mesh(
-    new t.CubeGeometry(30, 30, 30),
+    new t.CubeGeometry(20, 20, 20),
     new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/speed.png')})
   );
   speedcube.position.set(-unitsize-15, 35, -unitsize-15);
@@ -174,20 +174,8 @@ function drawRadar() {
 		for (var j = 0, m = map[i].length; j < m; j++) {
 			var d = 0;
 			if (i == c.x && j == c.z) {
-				context.fillStyle = 's';
+				context.fillStyle = '#43ff32';
 				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-			}
-			else if (i == c.x && j == c.z) {
-				context.fillStyle = '#AA33FF';
-				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-				context.fillStyle = '#000000';
-				context.fillText(''+d, i*20+8, j*20+12);
-			}
-			else if (d > 0 && d < 10) {
-				context.fillStyle = '#FF0000';
-				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-				context.fillStyle = '#000000';
-				context.fillText(''+d, i*20+8, j*20+12);
 			}
 			else if (map[i][j] > 0) {
 				context.fillStyle = '#666666';
