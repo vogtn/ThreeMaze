@@ -52,8 +52,8 @@ p {
   text-align: center;
   z-index: 1001;
 }
-#hurt {
-  background-color: red;
+#win {
+  background-color: green;
   display: none;
   left: 0;
   opacity: 0.15;
