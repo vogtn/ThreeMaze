@@ -97,8 +97,9 @@ function render() {
 
   //delay for speed pickup
   if(Date.now() > lastRunBoost + 60000){
-    if(distance(cam.position.x, cam.position.z, speedcube.position.x, speedcube.position.z) <15){
-      movespeed = movespeed + 50;
+    if(distance(cam.position.x, cam.position.z, speedcube.position.x, speedcube.position.z) < 15){
+      movespeed = movespeed + 200;
+      controls.movementSpeed = movespeed;
       lastRunBoost = Date.now();
     }
     speedcube.material.wireframe = false;
@@ -172,7 +173,7 @@ function drawRadar() {
 	for (var i = 0; i < mapW; i++) {
 		for (var j = 0, m = map[i].length; j < m; j++) {
 			var d = 0;
-			if (i == c.x && j == c.z && d == 0) {
+			if (i == c.x && j == c.z) {
 				context.fillStyle = 's';
 				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
 			}
