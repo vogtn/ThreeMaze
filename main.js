@@ -57,7 +57,7 @@ function init() {
   controls = new t.FirstPersonControls(cam);
   controls.movementSpeed = movespeed;
   controls.lookSpeed = lookspeed;
-  controls.lookVertial = false;
+  controls.lookVertical = false;
   controls.noFly = true;
 
   //world objects
