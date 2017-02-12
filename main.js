@@ -104,7 +104,7 @@ function render() {
     }
     speedcube.material.wireframe = false;
   }else{
-    speedcube.material.wireframe = false;
+    speedcube.material.wireframe = true;
   }
 
   renderer.render(scene, cam);
@@ -115,13 +115,13 @@ function setupScene(){
 
   var floor = new t.Mesh(
     new t.CubeGeometry(units * unitsize, 10, units *  unitsize),
-    new t.MeshLambertMaterial({color: 0xEDCBA0})
+    new t.MeshLambertMaterial({map: t.ImageUtils.loadTexture('images/lava-floor.jpg')})
   );
   scene.add(floor);
 
   var cube = new t.CubeGeometry(unitsize, wallheight, unitsize);
   var materials = [
-    new t.MeshLambertMaterial({map: t.ImageUtils.loadTexture('images/wall-1.jpg')}),
+    new t.MeshLambertMaterial({map: t.ImageUtils.loadTexture('images/jungle.jpg')}),
     new t.MeshLambertMaterial({map: t.ImageUtils.loadTexture('images/wall-2.jpg')}),
   ];
 
