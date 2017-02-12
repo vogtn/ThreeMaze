@@ -1,13 +1,13 @@
 //defining global vars
 
-var width = window.innerWidth,
-var height = window.innerHeight,
-var aspect = width/height,
-var unitsize = 250,
-var wallheight = unitsize/3,
-var movespeed = 100,
-var lookspeed = 0.075,
-var numai = 5,
+var width = window.innerWidth;
+var height = window.innerHeight;
+var aspect = width/height;
+var unitsize = 250;
+var wallheight = unitsize/3;
+var movespeed = 100;
+var lookspeed = 0.075;
+var numai = 5;
 
 var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
@@ -152,4 +152,86 @@ function setupScene(){
   var directionalLight2 = new t.DirectionalLight( 0xF7EFBE, 0.5);
   directionalLight2.position.set(-0.5, -1, -0.5);
   scene.add(directionalLight2);
+}
+
+function distance(x1, y1, x2, y2) {
+	return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
+}
+function getMapSector(v) {
+	var x = Math.floor((v.x + UNITSIZE / 2) / UNITSIZE + mapW/2);
+	var z = Math.floor((v.z + UNITSIZE / 2) / UNITSIZE + mapW/2);
+	return {x: x, z: z};
+}
+function checkWallCollision(v) {
+	var c = getMapSector(v);
+	return map[c.x][c.z] > 0;
+}
+// Radar
+function drawRadar() {
+	var c = getMapSector(cam.position), context = document.getElementById('radar').getContext('2d');
+	context.font = '10px Helvetica';
+	for (var i = 0; i < mapW; i++) {
+		for (var j = 0, m = map[i].length; j < m; j++) {
+			var d = 0;
+			if (i == c.x && j == c.z && d == 0) {
+				context.fillStyle = 's';
+				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
+			}
+			else if (i == c.x && j == c.z) {
+				context.fillStyle = '#AA33FF';
+				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
+				context.fillStyle = '#000000';
+				context.fillText(''+d, i*20+8, j*20+12);
+			}
+			else if (d > 0 && d < 10) {
+				context.fillStyle = '#FF0000';
+				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
+				context.fillStyle = '#000000';
+				context.fillText(''+d, i*20+8, j*20+12);
+			}
+			else if (map[i][j] > 0) {
+				context.fillStyle = '#666666';
+				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
+			}
+			else {
+				context.fillStyle = '#CCCCCC';
+				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
+			}
+		}
+	}
+}
+
+function onDocumentMouseMove(e){
+  e.preventDefault();
+  mouse.x = (e.clientX/ width) * 2 -1;
+  mouse.y = -(e.clientY/ height) * 2 + 1;
+}
+//window resize
+
+$(window)resize(function(){
+  width = window.innerWidth;
+  height = window.innerHeight;
+  aspect = width/height;
+  if(cam){
+    cam.aspect = aspect;
+    cam.updateProjectionMatrix();
+  }
+  if(renderer){
+    renderer.setSize(width, height);
+  }
+  $('#intro, #win').css({width: width, height: height});
+});
+
+//removes moving when window isn in focus
+$(window).focus(function() {
+	if (controls) controls.freeze = false;
+});
+$(window).blur(function() {
+	if (controls) controls.freeze = true;
+});
+
+//Get a random integer between lo and hi, inclusive.
+//Assumes lo and hi are integers and lo is lower than hi.
+function getRandBetween(lo, hi) {
+ return parseInt(Math.floor(Math.random()*(hi-lo+1))+lo, 10);
 }
