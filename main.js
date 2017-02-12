@@ -98,7 +98,7 @@ function render() {
   //delay for speed pickup
   if(Date.now() > lastRunBoost + 60000){
     if(distance(cam.position.x, cam.position.z, speedcube.position.x, speedcube.position.z) < 15){
-      movespeed = movespeed + 200;
+      movespeed = movespeed + 300;
       controls.movementSpeed = movespeed;
       lastRunBoost = Date.now();
     }
