@@ -126,7 +126,7 @@ function setupScene(){
   ];
 
   for(var i=0; i< mapW; i++){
-    for(var j=0; m=map[i].length; j<m; j++){
+    for(var j=0, m=map[i].length; j<m; j++){
       if(map[i][j]){
         var wall = new t.Mesh(cube, materials[map[i][j]-1]);
         wall.position.x = (i-units/2) * unitsize;
@@ -208,7 +208,7 @@ function onDocumentMouseMove(e){
 }
 //window resize
 
-$(window)resize(function(){
+$(window).resize(function(){
   width = window.innerWidth;
   height = window.innerHeight;
   aspect = width/height;
