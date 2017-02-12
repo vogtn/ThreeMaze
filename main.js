@@ -89,7 +89,26 @@ function animate() {
   render();
 }
 
+function render() {
+  var delta = clock.getDelta(), speed = delta;
+  controls.update(delta);
 
+  speedcube.rotation.x += 0.004;
+  speedcube.rotation.y += 0.008;
+
+  //delay for speed pickup
+  if(Date.now() > lastRunBoost + 60000){
+    if(distance(cam.position.x, cam.position.z, speedcube.position.x, speedcube.position.z) <15){
+      movespeed = movespeed + 50;
+      lastRunBoost = Date.now();
+    }
+    speedcube.material.wireframe = false;
+  }else{
+    speedcube.material.wireframe = false;
+  }
+
+  renderer.render(scene, cam);
+}
 
 function setupScene(){
   var units = mapW;
