@@ -7,7 +7,6 @@ var unitsize = 250;
 var wallheight = unitsize/3;
 var movespeed = 100;
 var lookspeed = 0.075;
-var numai = 5;
 
 var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
@@ -33,7 +32,7 @@ var map = [
 
 $(document).ready(function(){
   $('body').append('<div id="intro">START</div>');
-  $('#intro').css({width: width, height: height}).one('click', function(e){
+  $('#intro').css({height: height}).on('click', function(e){
     e.preventDefault();
     $(this).fadeOut();
     init();
@@ -47,11 +46,11 @@ function init() {
   clock = new t.Clock(); //timer for rendering smooth animation
   projector = new t.Projector(); //2d ray
   scene = new t.Scene(); //world
-  scene.fog = new t.FogExp2(0xD6F1FF, 0.0005); //adds fog
+  scene.fog = new t.FogExp2(0xD6F1FF, 0.0010); //adds fog
 
   //camera
   cam = new t.PerspectiveCamera(60, aspect, 1, 10000); // FOV,
-  cam.position.y = UNITSIZE * 0.2;
+  cam.position.y = unitsize * 0.2;
   scene.add(cam);
 
   //camera controls
@@ -64,7 +63,7 @@ function init() {
   //world objects
   setupScene();
 
-  renderer = new t.WebGlRenderer();
+  renderer = new t.WebGLRenderer();
   renderer.setSize(width, height);
 
   renderer.domElement.style.backgroundColor = '#D6F1FF';
@@ -93,8 +92,8 @@ function render() {
   var delta = clock.getDelta(), speed = delta;
   controls.update(delta);
 
-  speedcube.rotation.x += 0.004;
-  speedcube.rotation.y += 0.008;
+  speedcube.rotation.x += 0.1;
+  speedcube.rotation.y += 0.1;
 
   //delay for speed pickup
   if(Date.now() > lastRunBoost + 60000){
@@ -158,8 +157,8 @@ function distance(x1, y1, x2, y2) {
 	return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }
 function getMapSector(v) {
-	var x = Math.floor((v.x + UNITSIZE / 2) / UNITSIZE + mapW/2);
-	var z = Math.floor((v.z + UNITSIZE / 2) / UNITSIZE + mapW/2);
+	var x = Math.floor((v.x + unitsize / 2) / unitsize + mapW/2);
+	var z = Math.floor((v.z + unitsize / 2) / unitsize + mapW/2);
 	return {x: x, z: z};
 }
 function checkWallCollision(v) {
@@ -229,9 +228,3 @@ $(window).focus(function() {
 $(window).blur(function() {
 	if (controls) controls.freeze = true;
 });
-
-//Get a random integer between lo and hi, inclusive.
-//Assumes lo and hi are integers and lo is lower than hi.
-function getRandBetween(lo, hi) {
- return parseInt(Math.floor(Math.random()*(hi-lo+1))+lo, 10);
-}

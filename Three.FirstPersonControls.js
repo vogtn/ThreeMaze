@@ -3,13 +3,6 @@
  * @author alteredq / http://alteredqualia.com/
  * @author paulirish / http://paulirish.com/
  *
- * Modified from default:
- * - Added this.clickMove, which differentiates between mouse-looking and
- *   click-to-move.
- * - Changed camera movement in this.update() to respect wall collisions
- * - Changed this.update() to use this.noFly to disallow going up/down with R/F
- */
-
 THREE.FirstPersonControls = function ( object, domElement ) {
 
 	this.object = object;
@@ -179,11 +172,11 @@ THREE.FirstPersonControls = function ( object, domElement ) {
 
 	this.update = function( delta ) {
 		var actualMoveSpeed = 0;
-		
+
 		if ( this.freeze ) {
-			
+
 			return;
-			
+
 		} else {
 
 			if ( this.heightSpeed ) {
