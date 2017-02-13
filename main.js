@@ -7,6 +7,7 @@ var unitsize = 250;
 var wallheight = unitsize/2;
 var movespeed = 100;
 var lookspeed = 0.075;
+var score = 0;
 
 var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
@@ -18,15 +19,15 @@ var runBoost, lastRunBoost = 0;
 
 var map = [
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
-           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
-           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
-           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
-           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
-           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
-           [1, 1, 0, 0, 2, 0, 0, 0, 0, 1,],
-           [1, 0, 0, 0, 0, 2, 0, 0, 0, 1,],
+           [1, 1, 0, 2, 0, 0, 0, 1, 1, 1,],
+           [1, 1, 0, 0, 0, 2, 0, 1, 1, 1,],
+           [1, 1, 0, 2, 0, 2, 0, 1, 1, 1,],
+           [1, 1, 0, 2, 0, 2, 0, 1, 1, 1,],
+           [1, 1, 0, 2, 0, 2, 0, 1, 1, 1,],
+           [1, 1, 0, 2, 0, 0, 0, 0, 0, 1,],
+           [1, 0, 0, 2, 0, 2, 0, 0, 0, 1,],
            [1, 0, 0, 2, 0, 0, 2, 0, 0, 1,],
-           [1, 0, 0, 0, 2, 0, 0, 0, 1, 1,],
+           [1, 2, 2, 0, 2, 2, 0, 0, 1, 1,],
            [1, 1, 1, 0, 0, 0, 0, 1, 1, 1,],
            [1, 1, 1, 0, 0, 1, 0, 0, 1, 1,],
            [1, 1, 1, 1, 1, 1, 0, 0, 1, 1,],
@@ -78,7 +79,7 @@ function init() {
 
   //display
   $('body').append('<canvas id="radar" widht="200" height="200"></canvas>');
-  $('body').append('<div id="hud">Score: <span id="score">0</span></div>');
+  $('body').append('<div id="hud">Score: <span id="score">'+score+'</span></div>');
 
   //win condition
   $('body').append('<div id="win"></div>');
@@ -105,6 +106,11 @@ function render() {
       movespeed = movespeed + 300;
       controls.movementSpeed = movespeed;
       lastRunBoost = Date.now();
+      score += 200;
+      console.log(score);
+      $('#score').remove()
+      $('#hud').append('<span id="score">'+score+'</span></div>');
+
     }
     speedcube.material.wireframe = false;
   }else{
@@ -154,7 +160,7 @@ function setupScene(){
     new t.CubeGeometry(20, 100, 80),
     new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/door.gif')})
   );
-  endportal.position.set(0, 55, 0);
+  endportal.position.set(0, 55, -unitsize-15);
   scene.add(endportal);
 
   //lights
