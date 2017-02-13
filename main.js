@@ -4,7 +4,7 @@ var width = window.innerWidth;
 var height = window.innerHeight;
 var aspect = width/height;
 var unitsize = 250;
-var wallheight = unitsize/2;
+var wallheight = unitsize;
 var movespeed = 100;
 var lookspeed = 0.075;
 var score = 0;
@@ -12,7 +12,7 @@ var score = 0;
 var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
 mouse = {x:0, y:0};
-var runBoost, lastRunBoost = 0;
+var runBoost, lastRunBoost = false;
 
 // map is x index (1-9), y index (0-9)
 // 0 is ok location, 1 is wall, 2 is innerwall
@@ -71,14 +71,14 @@ function init() {
   renderer = new t.WebGLRenderer();
   renderer.setSize(width, height);
 
-  renderer.domElement.style.backgroundColor = '#D6F1FF';
+  renderer.domElement.style.backgroundColor = '#d11d1d';
   document.body.appendChild(renderer.domElement);
 
   //Track Mouse position
   document.addEventListener('mousemove', onDocumentMouseMove, false);
 
   //display
-  $('body').append('<canvas id="radar" widht="200" height="200"></canvas>');
+  $('body').append('<canvas id="radar" width="200" height="200"></canvas>');
   $('body').append('<div id="hud">Score: <span id="score">'+score+'</span></div>');
 
   //win condition
@@ -92,6 +92,21 @@ function animate() {
   }
   render();
 }
+function refreshScore(){
+  $('#score').remove()
+  $('#hud').append('<span id="score">'+score+'</span></div>');
+}
+function getSpeedBoost(){
+  $('body').append('<div id="speedBoostMsg">SPEED BOOST GET</div>');
+  $('body').append('<div id="addPoints">+200</div>');
+  $('#addPoints').delay(1000).fadeOut();
+  $('#speedBoostMsg').delay(2000).fadeOut();
+  removeSpeedBoost();
+}
+function removeSpeedBoost(){
+  $('#addPoints').remove;
+  $('#speedBoostMsg').remove;
+}
 
 function render() {
   var delta = clock.getDelta(), speed = delta;
@@ -101,16 +116,14 @@ function render() {
   speedcube.rotation.y += 0.1;
 
   //delay for speed pickup
-  if(Date.now() > lastRunBoost + 60000){
+  if(!lastRunBoost){
     if(distance(cam.position.x, cam.position.z, speedcube.position.x, speedcube.position.z) < 15){
       movespeed = movespeed + 300;
       controls.movementSpeed = movespeed;
-      lastRunBoost = Date.now();
+      lastRunBoost = true;
       score += 200;
-      console.log(score);
-      $('#score').remove()
-      $('#hud').append('<span id="score">'+score+'</span></div>');
-
+      refreshScore();
+      getSpeedBoost();
     }
     speedcube.material.wireframe = false;
   }else{
@@ -185,7 +198,7 @@ function checkWallCollision(v) {
 	var c = getMapSector(v);
 	return map[c.x][c.z] > 0;
 }
-// Radar
+// Radar For dev purposes
 function drawRadar() {
 	var c = getMapSector(cam.position), context = document.getElementById('radar').getContext('2d');
 	context.font = '10px Helvetica';

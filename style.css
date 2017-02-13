@@ -42,6 +42,28 @@ p {
   position: absolute;
   z-index: 100;
 }
+#speedBoostMsg {
+  text-align: center;
+  animation: blinker 0.5s linear infinite;
+  font-family: 'VT323', monospace;
+  color: white;
+  font-size: 4rem;
+  top: 50%;
+  left: 50%;
+  position: absolute;
+  z-index: 100;
+}
+#addPoints {
+  text-align: center;
+  font-family: 'VT323', monospace;
+  color: gold;
+  text-shadow: -8px 0 black, 0 8px black, 8px 0 black, 0 -8px black;
+  font-size: 8rem;
+  top: 30%;
+  left: 50%;
+  position: absolute;
+  z-index: 100;
+}
 #intro {
   background-color: #000000;
   color: #FFFFFF;
@@ -61,4 +83,10 @@ p {
   position: absolute;
   top: 0;
   z-index: 1002;
+}
+#hud{
+  color: white;
+}
+@keyframes blinker {
+  50% { opacity: 0; }
 }
