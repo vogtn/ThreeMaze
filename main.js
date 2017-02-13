@@ -1,5 +1,4 @@
 //defining global vars
-
 var width = window.innerWidth;
 var height = window.innerHeight;
 var aspect = width/height;
@@ -13,6 +12,14 @@ var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
 mouse = {x:0, y:0};
 var runBoost, lastRunBoost = false;
+
+
+//Time handling
+var time = 3000;
+
+if(time == 0){
+  console.log('game over');
+}
 
 // map is x index (1-9), y index (0-9)
 // 0 is ok location, 1 is wall, 2 is innerwall
@@ -80,10 +87,20 @@ function init() {
   //display
   $('body').append('<canvas id="radar" width="200" height="200"></canvas>');
   $('body').append('<div id="hud">Score: <span id="score">'+score+'</span></div>');
+  $('body').append('<div id="timer">Time: <span id="times">'+time+'</span></div>');
 
   //win condition
   $('body').append('<div id="win"></div>');
   $('#win').css({width: width, height: height});
+
+  //Countdown timer
+}
+
+function countdownTimer(){
+  time--;
+  $('#times').remove();
+  $('#timer').append('<span id="times">'+time+'</span></div>');
+  console.log(time)
 }
 
 function animate() {
@@ -111,9 +128,15 @@ function removeSpeedBoost(){
 function render() {
   var delta = clock.getDelta(), speed = delta;
   controls.update(delta);
+  setTimeout(countdownTimer(), 10000);
 
   speedcube.rotation.x += 0.1;
   speedcube.rotation.y += 0.1;
+
+  //win condition
+  if(distance(cam.position.x, cam.position.z, endportal.position.x, endportal.position.z) < 180){
+    console.log('winner');
+  }
 
   //delay for speed pickup
   if(!lastRunBoost){
@@ -170,10 +193,10 @@ function setupScene(){
 
   //end portal
   endportal = new t.Mesh(
-    new t.CubeGeometry(20, 100, 80),
+    new t.CubeGeometry(100, 100, 100),
     new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/door.gif')})
   );
-  endportal.position.set(0, 55, -unitsize-15);
+  endportal.position.set(80, 50, -1500);
   scene.add(endportal);
 
   //lights
