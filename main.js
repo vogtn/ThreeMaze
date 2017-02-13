@@ -14,10 +14,14 @@ mouse = {x:0, y:0};
 var runBoost, lastRunBoost = 0;
 
 // map is x index (1-9), y index (0-9)
-// 0 is character location 1 is wall, 2 is final area
+// 0 is ok location, 1 is wall, 2 is innerwall
 
 var map = [
            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1,],
+           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
+           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
+           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
+           [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
            [1, 1, 0, 0, 0, 0, 0, 1, 1, 1,],
            [1, 1, 0, 0, 2, 0, 0, 0, 0, 1,],
            [1, 0, 0, 0, 0, 2, 0, 0, 0, 1,],
@@ -145,6 +149,14 @@ function setupScene(){
   speedcube.position.set(-unitsize-15, 35, -unitsize-15);
   scene.add(speedcube);
 
+  //end portal
+  endportal = new t.Mesh(
+    new t.CubeGeometry(20, 100, 80),
+    new t.MeshBasicMaterial({map: t.ImageUtils.loadTexture('images/door.gif')})
+  );
+  endportal.position.set(0, 55, 0);
+  scene.add(endportal);
+
   //lights
   var directionalLight1 = new t.DirectionalLight( 0xF7EFBE, 0.7);
   directionalLight1.position.set(0.5, 1, 0.5);
@@ -155,6 +167,7 @@ function setupScene(){
 }
 
 function distance(x1, y1, x2, y2) {
+  //slope
 	return Math.sqrt((x2-x1)*(x2-x1)+(y2-y1)*(y2-y1));
 }
 function getMapSector(v) {
