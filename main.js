@@ -46,11 +46,16 @@ $(document).ready(function(){
   $('#intro').css({height: height}).on('click', function(e){
     e.preventDefault();
     $(this).fadeOut();
-    init();
-    setInterval(drawRadar, 1000);
-    animate();
+    startGame();
   });
 });
+
+
+
+function startGame(){
+  init();
+  animate();
+}
 
 //initialize game
 function init() {
@@ -84,7 +89,6 @@ function init() {
   document.addEventListener('mousemove', onDocumentMouseMove, false);
 
   //display
-  $('body').append('<canvas id="radar" width="200" height="200"></canvas>');
   $('body').append('<div id="hud">Score: <span id="score">'+score+'</span></div>');
   $('body').append('<div id="timer">Time: <span id="times">'+time+'</span></div>');
 
@@ -238,28 +242,6 @@ function checkWallCollision(v) {
 	var c = getMapSector(v);
 	return map[c.x][c.z] > 0;
 }
-// Radar For dev purposes
-function drawRadar() {
-	var c = getMapSector(cam.position), context = document.getElementById('radar').getContext('2d');
-	context.font = '10px Helvetica';
-	for (var i = 0; i < mapW; i++) {
-		for (var j = 0, m = map[i].length; j < m; j++) {
-			var d = 0;
-			if (i == c.x && j == c.z) {
-				context.fillStyle = '#43ff32';
-				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-			}
-			else if (map[i][j] > 0) {
-				context.fillStyle = '#666666';
-				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-			}
-			else {
-				context.fillStyle = '#CCCCCC';
-				context.fillRect(i * 20, j * 20, (i+1)*20, (j+1)*20);
-			}
-		}
-	}
-}
 
 function onDocumentMouseMove(e){
   e.preventDefault();
@@ -272,17 +254,27 @@ function handleWin(){
   $('canvas').remove();
   $('#hud').remove();
   $('#timer').remove();
-  $('body').append('<div id="credits"><h2>Your Score:' + score + '</h2></div>');
+  $('body').append('<div id="credits"><h2>Your Score: ' + score/2 + '</h2></div>');
+  setTimeout(function(){
+    $('#credits').append('<button id="nextLevel" onClick="newLevel()">NEXT LEVEL</button>');
+  }, 3000)
 }
 function handleEnd(){
   $('canvas').remove();
   $('#hud').remove();
   $('#timer').remove();
-  $('body').append('<div id="credits"><h2>Your Score:' + score + '</h2></div>');
+  $('body').append('<div id="credits"><h2>Total Score:' + score + '</h2></div>');
   $('#credits').append('<h2>Game Over</h2>');
 }
 
 //window resize
+
+function newLevel(){
+  finished = false;
+  runAnim = true;
+  $('body')[0].children.remove
+  startGame();
+}
 
 $(window).resize(function(){
   width = window.innerWidth;

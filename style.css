@@ -27,7 +27,6 @@ body {
   font-size: 12px;
   position: absolute;
   text-align: center;
-  top: 10px;
   width: 100%;
   z-index: 5000;
 }
@@ -38,14 +37,7 @@ p {
   margin: 0;
   padding: 5px;
 }
-#radar {
-  background-color: #EEEEEE;
-  border: 1px solid black;
-  bottom: 10px;
-  left: 10px;
-  position: absolute;
-  z-index: 100;
-}
+
 #speedBoostMsg {
   text-align: center;
   animation: blinker 0.5s linear infinite;
