@@ -23,12 +23,13 @@ body {
   color: white;
 }
 #credits {
+  background-color: black;
   font-size: 12px;
   position: absolute;
   text-align: center;
   top: 10px;
   width: 100%;
-  z-index: 100;
+  z-index: 5000;
 }
 p {
   background-color: #EEEEEE;
@@ -98,4 +99,10 @@ p {
   position: absolute;
   left: 10px;
   z-index: 100;
+}
+h2{
+  font-family: 'VT323', monospace;
+  color: white;
+  text-align: center;
+  font-size: 5rem;
 }

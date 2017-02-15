@@ -6,7 +6,7 @@ var unitsize = 250;
 var wallheight = unitsize;
 var movespeed = 100;
 var lookspeed = 0.075;
-var score = 0;
+var score = 1000;
 
 var t= THREE, scene, cam, renderer, controls, clock, projector, model, skin;
 var runAnim = true,
@@ -16,10 +16,9 @@ var runBoost, lastRunBoost = false;
 
 //Time handling
 var time = 3000;
+var userFinishTime;
+var finished = false;
 
-if(time == 0){
-  console.log('game over');
-}
 
 // map is x index (1-9), y index (0-9)
 // 0 is ok location, 1 is wall, 2 is innerwall
@@ -97,10 +96,22 @@ function init() {
 }
 
 function countdownTimer(){
-  time--;
-  $('#times').remove();
-  $('#timer').append('<span id="times">'+time+'</span></div>');
-  console.log(time)
+  if(finished == false){
+    time--;
+    $('#times').remove();
+    $('#timer').append('<span id="times">'+time+'</span></div>');
+    if(time == 0){
+      console.log('over!!')
+      clearInterval();
+      removeTimer();
+    }
+  }else{
+    handleEnd();
+  }
+}
+function removeTimer(){
+  userFinishTime = time;
+  handleEnd();
 }
 
 function animate() {
@@ -128,14 +139,20 @@ function removeSpeedBoost(){
 function render() {
   var delta = clock.getDelta(), speed = delta;
   controls.update(delta);
-  setTimeout(countdownTimer(), 10000);
+
+  //create timer
 
   speedcube.rotation.x += 0.1;
   speedcube.rotation.y += 0.1;
 
   //win condition
-  if(distance(cam.position.x, cam.position.z, endportal.position.x, endportal.position.z) < 180){
-    console.log('winner');
+  if(distance(cam.position.x, cam.position.z, endportal.position.x, endportal.position.z) < 100){
+    userFinishTime = time;
+    finished = true;
+    runAnim = false;
+    handleWin();
+  }else{
+    countdownTimer();
   }
 
   //delay for speed pickup
@@ -249,6 +266,22 @@ function onDocumentMouseMove(e){
   mouse.x = (e.clientX/ width) * 2 -1;
   mouse.y = -(e.clientY/ height) * 2 + 1;
 }
+
+function handleWin(){
+  score = score + time;
+  $('canvas').remove();
+  $('#hud').remove();
+  $('#timer').remove();
+  $('body').append('<div id="credits"><h2>Your Score:' + score + '</h2></div>');
+}
+function handleEnd(){
+  $('canvas').remove();
+  $('#hud').remove();
+  $('#timer').remove();
+  $('body').append('<div id="credits"><h2>Your Score:' + score + '</h2></div>');
+  $('#credits').append('<h2>Game Over</h2>');
+}
+
 //window resize
 
 $(window).resize(function(){
