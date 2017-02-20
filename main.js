@@ -42,7 +42,9 @@ var map = [
 
 
 $(document).ready(function(){
-  $('body').append('<div id="intro">START</div>');
+  $('body').append('<div id="intro">JUNGLERUN</div>');
+  $('#intro').append('<div id="portalpic">FIND THE PORTAL</div><img src="images/portal.png">');
+  $('#intro').append('<div id="speedboostpic">LOOK FOR SPEEDBOOSTS</div><img src="images/speedboost.png">');
   $('#intro').css({height: height}).on('click', function(e){
     e.preventDefault();
     $(this).fadeOut();
@@ -272,8 +274,7 @@ function handleEnd(){
 function newLevel(){
   finished = false;
   runAnim = true;
-  $('body')[0].children.remove
-  startGame();
+  location.reload();
 }
 
 $(window).resize(function(){

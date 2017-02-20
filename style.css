@@ -98,3 +98,9 @@ h2{
   text-align: center;
   font-size: 5rem;
 }
+#portalpic {
+  max-width: 50%
+}
+#speedboostpic{
+  text-align: right;
+}
